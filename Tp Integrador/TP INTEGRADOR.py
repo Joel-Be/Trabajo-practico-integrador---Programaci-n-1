@@ -1,1 +1,2 @@
-hola loco
+def menu():
+  print("hola pa")
