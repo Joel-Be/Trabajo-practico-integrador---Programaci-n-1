@@ -232,16 +232,18 @@ def actualizar_datos():
               print("ERROR! Debe ingresar un numero del 1 al 4")
               continue
 
-# Opcion 3 (no hace busquedas parciales, hay que mejorarlo)      
+# Opcion 3     
 def buscar_pais():
   lista = Verificar_lista()
-
+  
   if len(lista) == 0:
     print("No existen registros de ningun pais")
     input("Presione enter para volver al menu principal...")
     return
 
   while True:
+    resultados = []
+    contador = 0
     print("\n<----- Buscar pais ----->")
     pais = input("Ingrese el nombre del pais (o 'salir' para volver al menu principal): ").lower().strip()
 
@@ -253,21 +255,47 @@ def buscar_pais():
       print("Ingreso invalido, intentelo nuevamente.")
       continue
 
-    if not existe_pais(pais):
-      print("El pais no se encuentra registrado")
-      continue
+    
+    for linea in lista:
+      if pais.lower() in linea['Pais'].lower():
+        if contador == 0:
+          print(f"Resultados de '{pais}':")
 
-    for linea in lista: 
-      if linea["Pais"].lower() == pais:        
-          print(f"\nPaís: {linea['Pais']}")
-          print(f"Población: {linea['Poblacion']}")
-          print(f"Superficie: {linea['Superficie km2']} km²")
-          print(f"Continente: {linea['Continente']}")
-          break
+        contador +=1
+        print(f"{contador}. {linea['Pais'].title()}")
+
+        resultados.append({'pais' : linea['Pais'], 'poblacion' : linea['Poblacion'], 'superficie' : linea['Superficie km2'], 'continente' : linea['Continente']})
+
+    if len(resultados) == 0:
+      print(f"No existen coincidencias con '{pais}', intentelo nuevamente")
+      continue
+    
+    while True:
+      opcion = input(f"Elija el resultado que desea: ")
+
+      if not validar_numero(opcion):
+        print("ERROR! Debe ingresar un numero")
+        continue
+      
+      opcion = int(opcion)
+
+      if not 0 < opcion <= len(resultados):
+        print("ERROR! El numero no se encuentra en el rango permitido")
+        print("Intentelo nuevamente")
+        continue
+
+      else:
+        break       
+    print(f"\nPaís: {resultados[opcion - 1]['pais'].title()}")
+    print(f"Población: {resultados[opcion - 1]['poblacion']}")
+    print(f"Superficie: {resultados[opcion - 1]['superficie']} km²")
+    print(f"Continente: {resultados[opcion - 1]['continente']}")
     
     opcion = input("\n¿Quiere consultar los datos de otro pais? S/N")
+
     if opcion.lower() == "s":
       continue
+
     else:
       return
 
