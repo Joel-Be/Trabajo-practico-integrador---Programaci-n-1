@@ -44,4 +44,3 @@ def menu():
         
             case _:
                 print("Opción inválida. Intenta nuevamente.")
-
