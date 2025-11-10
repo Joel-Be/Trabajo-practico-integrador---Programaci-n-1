@@ -29,7 +29,7 @@ def menu():
       case 2:
         actualizar_datos()
       case 3:
-        pass
+        buscar_pais()
       case 4:
         pass
       case 5:
@@ -42,12 +42,19 @@ def menu():
       case _:
         print("Opción inválida. Intenta nuevamente.")
 
+# Guardar datos en Paises.csv
+def guardar_cambios(lista):
+  with open("Paises.csv", "w") as archivo:
+    for diccionario in lista:
+      archivo.write(f"{diccionario['Pais']},{diccionario['Poblacion']},{diccionario['Superficie km2']},{diccionario['Continente']}\n")
 
+# Agrega un pais a Paises.csv
 def agregar_pais(Paises):
    with open("Paises.csv","a", newline="", encoding="utf-8") as archivo:
       escritor = csv.DictWriter(archivo,fieldnames=["Pais","Poblacion","Superficie km2","Continente"])
       escritor.writerow(Paises)
 
+# Verifica que un pais se encuentre en el archivo
 def existe_pais(nombre):
   Paises = Verificar_lista()
 
@@ -56,7 +63,7 @@ def existe_pais(nombre):
       return True
   return False
 
-
+# Cargar datos de Paises.csv en una lista
 def Verificar_lista():
   Paises = []
   
@@ -76,7 +83,8 @@ def Verificar_lista():
             "Superficie km2" : float(fila["Superficie km2"]),
             "Continente" : fila["Continente"]})
     return Paises
-  
+
+# Verificar que solo son numeros (pueden tener hasta un ".")
 def validar_numero(po):
   if po.count(".") > 1:
     return False
@@ -84,6 +92,7 @@ def validar_numero(po):
     return False
   return True
 
+# Verificar que solo son letras (puede tener espacios)
 def validar_palabra(entrada):
   entrada_limpia = entrada.strip()
   if not entrada_limpia:
@@ -141,7 +150,7 @@ def actualizar_datos():
   
   while True:
     print ("\n<-----Actualizar datos----->")
-    pais = input("Ingrese el nombre del pais (Ingrese 'salir' para volver al menu principal)").lower().strip()
+    pais = input("Ingrese el nombre del pais (o 'salir' para volver al menu principal)").lower().strip()
     
     if pais == "salir":
       print("Volviendo al menu principal...")
@@ -164,7 +173,7 @@ def actualizar_datos():
           print(f"Superficie: {linea['Superficie km2']} km²")
           print(f"Continente: {linea['Continente']}")
 
-        # Elegir qué actualizar
+          # Elegir qué actualizar
           print("\n¿Que desea actualizar?")
           print("1) Poblacion")
           print("2) Superficie")
@@ -179,11 +188,39 @@ def actualizar_datos():
         
           match opcion:
             case "1":
-              poblacion = input
-             
+              print(f"Poblacion actual de {linea['Pais'].title()}: {linea['Poblacion']} habitantes")
+              while True:
+                poblacion = input("Ingrese la nueva cantidad: ")
+
+                if not validar_numero(poblacion):
+                  print("Debe ingresar un numero entero")
+                  continue
+                else:
+                  break
+
+              linea['Poblacion'] = poblacion
+              guardar_cambios(lista)
+              print("Los cambios se guardaron exitosamente")
+              input("Presione enter para continuar...")
+              continue
+
             case "2":
-              pass
-            
+              print(f"Superficie actual de {linea['Pais'].title()}: {linea['Superficie km2']} km²")
+              while True:
+                superficie = input("Ingrese la nueva superficie: ")
+
+                if not validar_numero(superficie):
+                  print("Debe ingresar solo numeros")
+                  continue
+                else:
+                  break
+
+              linea['Superficie km2'] = superficie
+              guardar_cambios(lista)
+              print("Los cambios se guardaron exitosamente")
+              input("Presione enter para continuar...")
+              continue
+
             case "3":
               break
             
@@ -194,7 +231,46 @@ def actualizar_datos():
             case _:
               print("ERROR! Debe ingresar un numero del 1 al 4")
               continue
-             
+
+# Opcion 3 (no hace busquedas parciales, hay que mejorarlo)      
+def buscar_pais():
+  lista = Verificar_lista()
+
+  if len(lista) == 0:
+    print("No existen registros de ningun pais")
+    input("Presione enter para volver al menu principal...")
+    return
+
+  while True:
+    print("\n<----- Buscar pais ----->")
+    pais = input("Ingrese el nombre del pais (o 'salir' para volver al menu principal): ").lower().strip()
+
+    if pais == "salir":
+      print("Volviendo al menú principal...")
+      return
+         
+    if not validar_palabra(pais):
+      print("Ingreso invalido, intentelo nuevamente.")
+      continue
+
+    if not existe_pais(pais):
+      print("El pais no se encuentra registrado")
+      continue
+
+    for linea in lista: 
+      if linea["Pais"].lower() == pais:        
+          print(f"\nPaís: {linea['Pais']}")
+          print(f"Población: {linea['Poblacion']}")
+          print(f"Superficie: {linea['Superficie km2']} km²")
+          print(f"Continente: {linea['Continente']}")
+          break
+    
+    opcion = input("\n¿Quiere consultar los datos de otro pais? S/N")
+    if opcion.lower() == "s":
+      continue
+    else:
+      return
+
           
 
     
