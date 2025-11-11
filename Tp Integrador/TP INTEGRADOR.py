@@ -11,7 +11,7 @@ def menu():
     print("4. Filtrar países") # Segun continente, rango de población, rango de superficie.
     print("5. Ordenar países") # Segun nombre, población, superficie (ascendente o descendente).
     print("6. Mostrar estadísticas") 
-    print("7. Salir")
+    print("7. <-- Salir")
 
     while True:
       opcion = input("Elegí una opción: ")
@@ -31,7 +31,7 @@ def menu():
       case 3:
         buscar_pais()
       case 4:
-        pass
+        filtro()
       case 5:
         pass
       case 6:
@@ -93,6 +93,7 @@ def validar_numero(po):
   return True
 
 # Verificar que solo son letras (puede tener espacios)
+# ARREGLAR!!!!!
 def validar_palabra(entrada):
   entrada_limpia = entrada.strip()
   if not entrada_limpia:
@@ -178,7 +179,7 @@ def actualizar_datos():
           print("1) Poblacion")
           print("2) Superficie")
           print("3) Elegir otro pais")
-          print("4) volver al menu principal")
+          print("4) <-- volver al menu principal")
 
           opcion = input("Opcion: ").strip()
 
@@ -299,10 +300,136 @@ def buscar_pais():
     else:
       return
 
-          
+# Opcion 4
+def filtro():
+  lista = Verificar_lista()
+  
+  if len(lista) == 0:
+    print("No existen registros de ningun pais")
+    input("Presione enter para volver al menu principal...")
+    return
+  
+  while True:
+    print("\n<-----FILTRAR PAISES----->")
+    print("Filtrar segun:")
+    print("1. Continente")
+    print("2. Poblacion")
+    print("3. Superficie")
+    print("4. <-- Volver al menu principal")
 
+    while True:
+        opcion = input("Elegí una opción: ")
+
+        if not opcion.isdigit():
+          print("Debes ingresar un número válido")
+          continue
+
+        opcion = int(opcion)
+        break
+
+    match opcion:
+      case 1:
+        filtro_1(lista)
+      case 2:
+        filtro_2(lista)
+      
+      case 3:
+        filtro_3(lista)
+      
+      case 4:
+        print("Volviendo al menu principal...")
+        return
+      
+      case _:
+        print("Opción inválida. Intenta nuevamente.")
+
+# Filtro opcion 1 (Segun continente)
+def filtro_1(lista):
+  continentes = ["america", "europa", "asia", "africa", "oceania"]
+  while True:
+    print("<-----FILTRADO POR CONTINENTES----->")
+    print("Filtrar paises en:")
+    print("1. America")
+    print("2. Europa")
+    print("3. Asia")
+    print("4. Africa")
+    print("5. Oceania")
+    print("6. <-- Volver a al menu de filtros")
+
+    while True:
+        resultados = []
+        contador = 0
+        opcion = input("Elegí una opción: ")
+
+        if not opcion.isdigit():
+          print("Debes ingresar un número válido")
+          input("Presione enter para vovler a intentarlo...")
+          continue
+
+        opcion = int(opcion)
+
+        if not 0 < opcion <=6:
+          print("ERROR! Debe ingresar un numero del 1 al 6")
+          continue
+        
+        break
     
+    if opcion == 6:
+      break
     
+    for diccionario in lista:
+      if diccionario['Continente'].lower() == continentes[opcion - 1]:
+        if contador == 0:
+          print(f"Resultados de paises en {continentes[opcion - 1].title()}:")
+
+        contador +=1
+        print(f"{contador}. {diccionario['Pais'].title()}")
+
+        resultados.append({'pais' : diccionario['Pais'], 'poblacion' : diccionario['Poblacion'], 'superficie' : diccionario['Superficie km2'], 'continente' : diccionario['Continente']})
+
+    if len(resultados) == 0:
+      print(f"No existen paises cargados en {continentes[opcion - 1]}")
+      continue
+    
+    while True:
+      opcion = input(f"Elija el resultado que desea: ")
+
+      if not validar_numero(opcion):
+        print("ERROR! Debe ingresar un numero")
+        continue
+      
+      opcion = int(opcion)
+
+      if not 0 < opcion <= len(resultados):
+        print("ERROR! El numero no se encuentra en el rango permitido")
+        print("Intentelo nuevamente")
+        continue
+
+      else:
+        break       
+    print(f"\nPaís: {resultados[opcion - 1]['pais'].title()}")
+    print(f"Población: {resultados[opcion - 1]['poblacion']}")
+    print(f"Superficie: {resultados[opcion - 1]['superficie']} km²")
+    print(f"Continente: {resultados[opcion - 1]['continente']}")
+    
+    # Arreglar esto (si pongo cualquier cosa menos n repite el bucle)
+    opcion = input("\n¿Quiere utilizar otro continente? S/N")
+
+    if opcion.lower() == "n":
+      return
+
+    else:
+      continue
+
+
+
+# Filtro opcion 2 (Segun rango de poblacion)
+def filtro_2(lista):
+  pass
+
+# Filtro opcion 3 (Segun rango de superficie)
+def filtro_3(lista):
+  pass
 
 
 
