@@ -103,7 +103,7 @@ def validar_palabra(entrada):
     return False
   return True
 
-# Opcion 1  
+# Opcion 1 (Mejorar continente, poner un listado y que solo elijan con un numero, asi evitamos errores)
 def agregar_pais():
   while True:
    print("\n<-----Agregar nuevo pais----->")
@@ -174,7 +174,7 @@ def actualizar_datos():
           print(f"Superficie: {linea['Superficie km2']} km²")
           print(f"Continente: {linea['Continente']}")
 
-          # Elegir qué actualizar
+          # Elegir que actualizar
           print("\n¿Que desea actualizar?")
           print("1) Poblacion")
           print("2) Superficie")
@@ -256,7 +256,6 @@ def buscar_pais():
       print("Ingreso invalido, intentelo nuevamente.")
       continue
 
-    
     for linea in lista:
       if pais.lower() in linea['Pais'].lower():
         if contador == 0:
