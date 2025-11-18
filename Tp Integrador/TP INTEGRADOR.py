@@ -49,7 +49,7 @@ def guardar_cambios(lista):
       archivo.write(f"{diccionario['Pais']},{diccionario['Poblacion']},{diccionario['Superficie km2']},{diccionario['Continente']}\n")
 
 # Agrega un pais a Paises.csv
-def agregar_pais(Paises):
+def agregar_pais_csv(Paises):
    with open("Paises.csv","a", newline="", encoding="utf-8") as archivo:
       escritor = csv.DictWriter(archivo,fieldnames=["Pais","Poblacion","Superficie km2","Continente"])
       escritor.writerow(Paises)
@@ -93,15 +93,16 @@ def validar_numero(po):
   return True
 
 # Verificar que solo son letras (puede tener espacios)
-# ARREGLAR!!!!!
 def validar_palabra(entrada):
-  entrada_limpia = entrada.strip()
-  if not entrada_limpia:
-    return False
-  
-  if not entrada_limpia.isalpha():
-    return False
-  return True
+    entrada_limpia = entrada.strip()
+
+    if not entrada_limpia:
+        return False
+    
+    if not entrada_limpia.replace(" ", "").isalpha():
+        return False
+    
+    return True
 
 # Opcion 1 (Mejorar continente, poner un listado y que solo elijan con un numero, asi evitamos errores)
 def agregar_pais():
@@ -134,7 +135,7 @@ def agregar_pais():
      print("Entrada incorrecta. Intente de nuevo por favor")
      continue
 
-   agregar_pais({"Pais":nombre,"Poblacion":poblacion,"Superficie km2":superficie,"Continente":continente})
+   agregar_pais_csv({"Pais":nombre,"Poblacion":poblacion,"Superficie km2":superficie,"Continente":continente})
 
    continuar = input("¿Desea agregar otro pais? (s/n): ").lower().strip()
    if continuar != "s":
@@ -174,7 +175,6 @@ def actualizar_datos():
           print(f"Superficie: {linea['Superficie km2']} km²")
           print(f"Continente: {linea['Continente']}")
 
-          # Elegir que actualizar
           print("\n¿Que desea actualizar?")
           print("1) Poblacion")
           print("2) Superficie")
@@ -411,27 +411,67 @@ def filtro_1(lista):
     print(f"Superficie: {resultados[opcion - 1]['superficie']} km²")
     print(f"Continente: {resultados[opcion - 1]['continente']}")
     
-    # Arreglar esto (si pongo cualquier cosa menos n repite el bucle)
-    opcion = input("\n¿Quiere utilizar otro continente? S/N")
+    while True:
+      opcion = input("\n¿Quiere utilizar otro continente? S/N").lower()
+
+      if opcion == "n" or opcion == "s":
+        break
+      else:
+        print("ERROR! Solo puede ingresar 'S' o 'N'")
 
     if opcion.lower() == "n":
       return
 
-    else:
-      continue
-
-
-
 # Filtro opcion 2 (Segun rango de poblacion)
 def filtro_2(lista):
-  pass
+   while True:
+    resultados = []
+    print("<-----FILTRADO POR RANGO DE POBLACION----->")
+    print("(Ingrese 'salir' para volver al menu anterior)")
+
+    minimo = input("Ingrese el minimo: ").strip
+
+    if minimo.lower() == "salir":
+      print("Volviendo al menu de filtros")
+      return
+    
+    if not validar_numero(minimo):
+      print("ERROR! Debe ingresar un numero entero")
+      print("Intentelo nuevamente")
+      continue
+
+    maximo = input("Ingrese el minimo: ").strip
+
+    if maximo.lower() == "salir":
+      print("Volviendo al menu de filtros")
+      return
+    
+    if not validar_numero(maximo):
+      print("ERROR! Debe ingresar un numero entero")
+      print("Intentelo nuevamente")
+      continue
+
+    minimo = int(minimo)
+    maximo = int(maximo)
+    contador = 0
+
+    for diccionario in lista:
+      if minimo <= diccionario['Poblacion'] <= maximo:
+        if contador == 0:
+          print("Rango de poblacion")
+          print(f"Minimo: {minimo} -- Maximo: {maximo}")
+        
+        contador += 1
+        print(F"{contador}. {diccionario['Pais'].title()}: {diccionario ['Poblacion']} habitantes")
+        resultados.append(diccionario)
+
+    # Poner para que le pregunrtte si nquiere volver a intentarlo o- volver al menu anterior!!!!!!!!!!!!!
+    if contador == 0:
+      print(f"No existen paises dentro de esos parametros")
+
+
 
 # Filtro opcion 3 (Segun rango de superficie)
 def filtro_3(lista):
   pass
-
-
-
-
-Verificar_lista()    
-agregar_pais()
+  
