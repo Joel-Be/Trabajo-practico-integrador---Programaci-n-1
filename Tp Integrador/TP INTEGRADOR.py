@@ -1,7 +1,5 @@
 # RECORDATORIOS
-# - Hacer una funcion que ordene una lista de diccionarios de forma creciente o decreciente y segun la key seleccionada:
-# Que sea una sola funcion que ya haga todo lo necesario, tanto para crecientes, decrecientes, y los tipos de keys diferentes
-# puedo usar una lista con diccionarios y que sus keys sean numneros que se seleccionaran previemente para saber que key usar. 
+# - Solo queda hacer la opcion 6 (mostrar estadisticas) del menu
 
 import os
 import csv
@@ -14,7 +12,7 @@ def menu():
     print("2. Actualizar datos de población y superficie de un país")
     print("3. Buscar un país por nombre ")
     print("4. Filtrar países")
-    print("5. Ordenar países") # Segun nombre, población, superficie (ascendente o descendente).
+    print("5. Ordenar países")
     print("6. Mostrar estadísticas") 
     print("7. <-- Salir")
 
@@ -40,7 +38,7 @@ def menu():
       case 5:
         ordenar_paises()
       case 6:
-        pass
+        mostrar_estadisticas()
       case 7:
         print("¡Hasta luego!")
         return
@@ -632,6 +630,136 @@ def filtro_3(lista):
 
     if opcion == "n":
       return
-  
+
+# Opcion 5
 def ordenar_paises():
+
+  lista = Verificar_lista()
+  keys = { 1: "Pais", 2: "Poblacion", 3: "Superficie km2", 4: "Continente"}
+  
+  if len(lista) == 0:
+    print("No existen registros de ningun pais")
+    input("Presione enter para volver al menu principal...")
+    return
+  
+  while True:
+    print("\n<-----ORDENAR----->")
+    print("Ordenar segun:")
+    print("1. Nombre")
+    print("2. Población")
+    print("3. Superficie")
+    print("4. Continente")
+    print("5. <-- Volver al menu principal")
+
+    opcion_key = input("Opcion: ")
+
+    if not opcion_key.isdigit() or opcion_key not in ("1", "2", "3", "4", "5"):
+        print("ERROR! Debe ingresar un número entero del 1 al 5")
+        continue
+    
+    opcion_key = int(opcion_key)
+
+    if opcion_key == 5:
+      print("Volviendo al menu principal...")
+      return
+
+    key = keys[opcion_key]
+
+    print (f"\n<------ORDENAR SEGUN {key.upper()}------>")
+    print("Ordenar de forma:")
+    print("1. Creciente")
+    print("2. Decreciente")
+    print("3. <-- Volver al menu anterior")
+
+    while True:
+
+      opcion_orden = input("Opcion: ")
+
+      if not opcion_orden.isdigit() or opcion_orden not in ("1", "2", "3"):
+        print("ERROR! Debe ingresar un número entero del 1 al 3")
+        continue
+
+      else:
+        break
+    
+    if opcion_orden == "3":
+      print("Volviendo al menu anterior...")
+      continue
+
+    orden = "creciente" if opcion_orden == "1" else "decreciente"
+
+    lista_ordenada = ordenar_lista(lista, key, orden)
+
+    print(f"LISTADO DE PAISES ORDENADOS DE FORMA {orden.upper()} SEGUN {key.upper()}")
+    
+    contador = 1
+
+    for diccionario in lista_ordenada:
+
+      print(f"{contador}. {diccionario['Pais']} --> {key}: {diccionario[key]} ")
+      contador += 1
+    
+    print(f"{contador}) <-- Volver al menu anterior")
+
+    while True:
+
+      opcion_pais = input("Opcion: ")
+
+      if not opcion_pais.isdigit():
+        print(f"ERROR! Debe ingresar un número del 1 al {contador}")
+        continue
+
+      opcion_pais = int(opcion_pais)
+
+      if not 1 <= opcion_pais <= contador:
+        print(f"ERROR! Debe ingresar un número del 1 al {contador}")
+        continue
+
+
+      else:
+        break
+
+    if contador == opcion_pais:
+      print("Volviendo al menu anterior...")
+      continue
+
+    print(f"\n<-----{lista_ordenada[opcion_pais - 1]['Pais']}----->")
+    print(f"Población: {lista_ordenada[opcion_pais - 1]['Poblacion']}")
+    print(f"Superficie: {lista_ordenada[opcion_pais - 1]['Superficie km2']} km²")
+    print(f"Continente: {lista_ordenada[opcion_pais - 1]['Continente']}")
+
+    while True:
+      opcion = input("\n¿Quiere buscar otro pais? S/N").lower()
+
+      if opcion == "n" or opcion == "s":
+        break
+      else:
+        print("ERROR! Solo puede ingresar 'S' o 'N'")
+
+    if opcion == "n":
+      print("Volviendo al menu principal...")
+      return
+
+# Ordenar una lista mediante el metodo burbuja
+def ordenar_lista(lista_desordenada, key, orden):
+
+    lista_ordenada = lista_desordenada.copy()
+    n = len(lista_ordenada)
+
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+
+            x = lista_ordenada[j][key]
+            y = lista_ordenada[j + 1][key]
+
+            if orden == "creciente" and x > y:
+                lista_ordenada[j], lista_ordenada[j + 1] = lista_ordenada[j + 1], lista_ordenada[j]
+
+            elif orden == "decreciente" and x < y:
+                lista_ordenada[j], lista_ordenada[j + 1] = lista_ordenada[j + 1], lista_ordenada[j]
+
+    return lista_ordenada
+
+# Opcion 6
+def mostrar_estadisticas():
   pass
