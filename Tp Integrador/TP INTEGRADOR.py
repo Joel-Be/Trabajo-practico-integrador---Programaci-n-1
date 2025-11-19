@@ -1,3 +1,8 @@
+# RECORDATORIOS
+# - Hacer una funcion que ordene una lista de diccionarios de forma creciente o decreciente y segun la key seleccionada:
+# Que sea una sola funcion que ya haga todo lo necesario, tanto para crecientes, decrecientes, y los tipos de keys diferentes
+# puedo usar una lista con diccionarios y que sus keys sean numneros que se seleccionaran previemente para saber que key usar. 
+
 import os
 import csv
 
@@ -8,7 +13,7 @@ def menu():
     print("1. Agregar país")
     print("2. Actualizar datos de población y superficie de un país")
     print("3. Buscar un país por nombre ")
-    print("4. Filtrar países") # Segun continente, rango de población, rango de superficie.
+    print("4. Filtrar países")
     print("5. Ordenar países") # Segun nombre, población, superficie (ascendente o descendente).
     print("6. Mostrar estadísticas") 
     print("7. <-- Salir")
@@ -33,7 +38,7 @@ def menu():
       case 4:
         filtro()
       case 5:
-        pass
+        ordenar_paises()
       case 6:
         pass
       case 7:
@@ -44,9 +49,17 @@ def menu():
 
 # Guardar datos en Paises.csv
 def guardar_cambios(lista):
-  with open("Paises.csv", "w") as archivo:
-    for diccionario in lista:
-      archivo.write(f"{diccionario['Pais']},{diccionario['Poblacion']},{diccionario['Superficie km2']},{diccionario['Continente']}\n")
+    with open("Paises.csv", "w", encoding="utf-8", newline="") as archivo:
+        # Escribimos la cabecera
+        archivo.write("Pais,Poblacion,Superficie km2,Continente\n")
+        # Escribimos cada país
+        for diccionario in lista:
+            archivo.write(
+                f"{diccionario['Pais']},"
+                f"{diccionario['Poblacion']},"
+                f"{diccionario['Superficie km2']},"
+                f"{diccionario['Continente']}\n"
+            )
 
 # Agrega un pais a Paises.csv
 def agregar_pais_csv(Paises):
@@ -346,7 +359,7 @@ def filtro():
 def filtro_1(lista):
   continentes = ["america", "europa", "asia", "africa", "oceania"]
   while True:
-    print("<-----FILTRADO POR CONTINENTES----->")
+    print("\n<-----FILTRADO POR CONTINENTES----->")
     print("Filtrar paises en:")
     print("1. America")
     print("2. Europa")
@@ -426,52 +439,199 @@ def filtro_1(lista):
 def filtro_2(lista):
    while True:
     resultados = []
-    print("<-----FILTRADO POR RANGO DE POBLACION----->")
-    print("(Ingrese 'salir' para volver al menu anterior)")
+    print("\n<-----FILTRADO POR RANGO DE POBLACION----->")
+    print("(Ingrese 'salir' para volver al menu de filtros)")
 
-    minimo = input("Ingrese el minimo: ").strip
+    minimo = input("Ingrese el minimo: ").strip()
+
+    if minimo.lower() == "salir":
+      print("Volviendo al menu de filtros")
+      return
+    
+    if not minimo.isdigit():
+      print("ERROR! Debe ingresar un numero entero")
+      print("Intentelo nuevamente")
+      continue
+
+    maximo = input("Ingrese el maximo: ").strip()
+    if maximo.lower() == "salir":
+      print("Volviendo al menu de filtros")
+      return
+    
+    if not maximo.isdigit():
+      print("ERROR! Debe ingresar un numero entero")
+      print("Intentelo nuevamente")
+      continue
+    
+    minimo = int(minimo)
+    maximo = int(maximo)
+
+    if minimo >= maximo:
+      print("ERROR! El valor minimo no puede ser mayor o igual al maximo.")
+      print("Intentelo nuevamente")
+      continue
+
+    contador = 0
+    for diccionario in lista:
+      if minimo <= diccionario['Poblacion'] <= maximo:
+        if contador == 0:
+          print(f"\nPaíses con población entre {minimo} y {maximo}:")
+
+        contador += 1
+        print(F"{contador}. {diccionario['Pais'].title()}: {diccionario ['Poblacion']} habitantes")
+        resultados.append(diccionario)
+
+    if contador == 0:
+      
+      print(f"\nNo se encontraron países con población entre {minimo} y {maximo}.")
+      print("1. Volver a intentarlo")
+      print("2. <-- Volver al menu de filtros")
+
+      while True:
+        opcion = input("Opcion: ").strip()
+
+        if opcion not in ("1", "2"):
+          print("ERROR! Debe ingresar '1' o '2'")
+          print("Intentelo nuevamente")
+          continue
+        break
+
+      if int(opcion) == 1:
+        continue
+      else:
+        return
+    
+    while True:
+      opcion = input(f"Elija el resultado que desea: ")
+
+      if not opcion.isdigit():
+        print("ERROR! Debe ingresar un número entero")
+        continue
+
+      
+      opcion = int(opcion)
+
+      if not 0 < opcion <= len(resultados):
+        print("ERROR! El numero no se encuentra en el rango permitido")
+        print("Intentelo nuevamente")
+        continue
+
+      else:
+        break       
+    print(f"\nPaís: {resultados[opcion - 1]['Pais'].title()}")
+    print(f"Población: {resultados[opcion - 1]['Poblacion']}")
+    print(f"Superficie: {resultados[opcion - 1]['Superficie km2']} km²")
+    print(f"Continente: {resultados[opcion - 1]['Continente']}")
+    
+    while True:
+      opcion = input("\n¿Quiere utilizar otro rango de poblacion? S/N").lower()
+
+      if opcion == "n" or opcion == "s":
+        break
+      else:
+        print("ERROR! Solo puede ingresar 'S' o 'N'")
+
+    if opcion == "n":
+      return
+
+# Filtro opcion 3 (Segun rango de superficie)
+def filtro_3(lista):
+  while True:
+    resultados = []
+    print("\n<-----FILTRADO POR RANGO DE SUPERFICIE----->")
+    print("(Ingrese 'salir' para volver al menu de filtros)")
+
+    minimo = input("Ingrese el minimo en km²: ").strip()
 
     if minimo.lower() == "salir":
       print("Volviendo al menu de filtros")
       return
     
     if not validar_numero(minimo):
-      print("ERROR! Debe ingresar un numero entero")
+      print("ERROR! Debe ingresar un numero")
       print("Intentelo nuevamente")
       continue
 
-    maximo = input("Ingrese el minimo: ").strip
-
+    maximo = input("Ingrese el maximo en km²: ").strip()
     if maximo.lower() == "salir":
       print("Volviendo al menu de filtros")
       return
     
     if not validar_numero(maximo):
-      print("ERROR! Debe ingresar un numero entero")
+      print("ERROR! Debe ingresar un numero")
+      print("Intentelo nuevamente")
+      continue
+    
+    minimo = float(minimo)
+    maximo = float(maximo)
+
+    if minimo >= maximo:
+      print("ERROR! El valor minimo no puede ser mayor o igual al maximo.")
       print("Intentelo nuevamente")
       continue
 
-    minimo = int(minimo)
-    maximo = int(maximo)
     contador = 0
-
     for diccionario in lista:
-      if minimo <= diccionario['Poblacion'] <= maximo:
+      if minimo <= diccionario['Superficie km2'] <= maximo:
         if contador == 0:
-          print("Rango de poblacion")
-          print(f"Minimo: {minimo} -- Maximo: {maximo}")
-        
+          print(f"\nPaíses con superficie entre {minimo} km² y {maximo} km²:")
+
         contador += 1
-        print(F"{contador}. {diccionario['Pais'].title()}: {diccionario ['Poblacion']} habitantes")
+        print(F"{contador}. {diccionario['Pais'].title()} --> Superficie: {diccionario ['Superficie km2']} km²")
         resultados.append(diccionario)
 
-    # Poner para que le pregunrtte si nquiere volver a intentarlo o- volver al menu anterior!!!!!!!!!!!!!
     if contador == 0:
-      print(f"No existen paises dentro de esos parametros")
+      
+      print(f"\nNo se encontraron países con superficie entre {minimo} km² y {maximo} km².")
+      print("1. Volver a intentarlo")
+      print("2. <-- Volver al menu de filtros")
 
+      while True:
+        opcion = input("Opcion: ").strip()
 
+        if opcion not in ("1", "2"):
+          print("ERROR! Debe ingresar '1' o '2'")
+          print("Intentelo nuevamente")
+          continue
+        break
 
-# Filtro opcion 3 (Segun rango de superficie)
-def filtro_3(lista):
-  pass
+      if int(opcion) == 1:
+        continue
+      else:
+        return
+    
+    while True:
+      opcion = input(f"Elija el resultado que desea: ")
+
+      if not opcion.isdigit():
+        print("ERROR! Debe ingresar un número entero")
+        continue
+
+      
+      opcion = int(opcion)
+
+      if not 0 < opcion <= len(resultados):
+        print("ERROR! El numero no se encuentra en el rango permitido")
+        print("Intentelo nuevamente")
+        continue
+
+      else:
+        break       
+    print(f"\nPaís: {resultados[opcion - 1]['Pais'].title()}")
+    print(f"Población: {resultados[opcion - 1]['Poblacion']}")
+    print(f"Superficie: {resultados[opcion - 1]['Superficie km2']} km²")
+    print(f"Continente: {resultados[opcion - 1]['Continente']}")
+    
+    while True:
+      opcion = input("\n¿Quiere utilizar otro rango de superficie? S/N").lower()
+
+      if opcion == "n" or opcion == "s":
+        break
+      else:
+        print("ERROR! Solo puede ingresar 'S' o 'N'")
+
+    if opcion == "n":
+      return
   
+def ordenar_paises():
+  pass
