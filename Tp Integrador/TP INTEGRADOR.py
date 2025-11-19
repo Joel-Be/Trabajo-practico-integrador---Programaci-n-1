@@ -50,9 +50,9 @@ def menu():
 # Guardar datos en Paises.csv
 def guardar_cambios(lista):
     with open("Paises.csv", "w", encoding="utf-8", newline="") as archivo:
-        # Escribimos la cabecera
+        
         archivo.write("Pais,Poblacion,Superficie km2,Continente\n")
-        # Escribimos cada país
+  
         for diccionario in lista:
             archivo.write(
                 f"{diccionario['Pais']},"
