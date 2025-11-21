@@ -115,7 +115,7 @@ def validar_palabra(entrada):
     
     return True
 
-# Opcion 1 (Mejorar continente, poner un listado y que solo elijan con un numero, asi evitamos errores)
+# Opcion 1 
 def agregar_pais():
   while True:
    print("\n<-----Agregar nuevo pais----->")
@@ -179,7 +179,7 @@ def actualizar_datos():
   
   while True:
     print ("\n<-----Actualizar datos----->")
-    pais = input("Ingrese el nombre del pais (o 'salir' para volver al menu principal)").lower().strip()
+    pais = input("Ingrese el nombre del pais (o 'salir' para volver al menu principal): ").lower().strip()
     
     if pais == "salir":
       print("Volviendo al menu principal...")
