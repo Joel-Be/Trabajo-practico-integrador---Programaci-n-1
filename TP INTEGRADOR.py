@@ -39,9 +39,9 @@ def menu():
       case 4:
         filtro()
       case 5:
-        ordenar_paises()
+        pass  # La funcion de ordenar paises va aca
       case 6:
-        pass
+        mostrar_estadisticas()
       case 7:
         print("¡Hasta luego!")
         return
@@ -649,5 +649,111 @@ def filtro_3(lista):
 
     if opcion == "n":
       return
+
+def mostrar_estadisticas():
+
+  Paises = Verificar_lista()
+  print("<-----ESTADISTICAS DE PAISES----->")
+  print("Seleccione la estadística que desea ver:")
+  print("1. País con menor y mayor población")
+  print("2. Promedio de población")
+  print("3. Promedio de superficie")
+  print("4. Cantidad de países por continente")
+
+  opcion = input("Ingrese el opcion que desea ver: ")
+  if not opcion.isdigit():
+    print("Debes ingresar un número válido")
+    return
+  opcion = int(opcion)
+  total_paises = len(Paises)
+  match opcion:
+    case 1:
+      pais_menor_y_mayor_poblacion(Paises)
+    case 2:
+      promedio_poblacion(Paises)
+    case 3:
+      promedio_superficie(Paises)
+    case 4:
+      cantidad_paises_por_continente(Paises)
+    case _:
+      print("Opción inválida. Intenta nuevamente.")
+
+def pais_menor_y_mayor_poblacion(Paises):
+ Paises = Verificar_lista()
+ if len(Paises) == 0:
+   print("No existen registros de ningun pais")
+   input("Presione enter para volver al menu principal...")
+   return
+   
+ pais_min = Paises[0]
+ pais_max = Paises[0]
+
+ min_poblacion = Paises[0]["Poblacion"]
+ max_poblacion = Paises[0]["Poblacion"]
+
+ for pais in Paises:
+    if pais["Poblacion"] < min_poblacion:
+      min_poblacion = pais["Poblacion"]
+      pais_min = pais
+    if pais["Poblacion"] > max_poblacion:
+      max_poblacion = pais["Poblacion"]
+      pais_max = pais
+
+ print("-" * 30)
+ print(f"País con menor población: {pais_min['Pais']}")
+ print(f"Población: {pais_min['Poblacion']:,.0f} habitantes")
+ print("-" * 30)
+ print(f"País con mayor población: {pais_max['Pais']}")
+ print(f"Población: {pais_max['Poblacion']:,.0f} habitantes")
+
+def promedio_poblacion(Paises):
+ Paises = Verificar_lista()
+ if len(Paises) == 0:
+   print("No existen registros de ningun pais")
+   input("Presione enter para volver al menu principal...")
+   return
+
+ total_poblacion = sum(pais["Poblacion"] for pais in Paises)
+ promedio = total_poblacion / len(Paises)
+
+ print("-" * 30)
+ print(f"Promedio de población: {promedio:,.0f} habitantes")
+ return
+
+
+def promedio_superficie(Paises):
+ Paises = Verificar_lista()
+ if len(Paises) == 0:
+    print("No existen registros de ningun pais")
+    input("Presione enter para volver al menu principal...")
+    return
+  
+ total_superficie = sum(pais["Superficie km2"] for pais in Paises)
+ promedio = total_superficie / len(Paises)
+  
+ print("-" * 30)
+ print(f"Promedio de superficie: {promedio:,.2f} km²")
+
+def cantidad_paises_por_continente(Paises):
+  Paises = Verificar_lista()
+  if len(Paises) == 0:
+      print("No existen registros de ningun pais")
+      input("Presione enter para volver al menu principal...")
+      return
+  
+  continente_count = {}
+  
+  for pais in Paises:
+      continente = pais["Continente"]
+      if continente in continente_count:
+        continente_count[continente] += 1
+      else:
+        continente_count[continente] = 1
+  
+  print("-" * 30)
+  print("Cantidad de países por continente:")
+  for continente, count in continente_count.items():
+      print(f"{continente}: {count} país/es")
+  return
 
 menu()
