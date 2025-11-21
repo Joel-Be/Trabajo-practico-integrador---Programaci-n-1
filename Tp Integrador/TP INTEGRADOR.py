@@ -792,7 +792,7 @@ def mostrar_estadisticas():
     print("Debes ingresar un número válido")
     return
   opcion = int(opcion)
-  total_paises = len(Paises)
+
   match opcion:
     case 1:
       pais_menor_y_mayor_poblacion(Paises)
