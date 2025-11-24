@@ -1,6 +1,3 @@
-# RECORDATORIOS
-# - Solo queda hacer la opcion 6 (mostrar estadisticas) del menu
-
 import os
 import csv
 
@@ -846,7 +843,6 @@ def promedio_poblacion(Paises):
  print("-" * 30)
  print(f"Promedio de población: {promedio:,.0f} habitantes")
  return
-
 
 def promedio_superficie(Paises):
  Paises = Verificar_lista()
