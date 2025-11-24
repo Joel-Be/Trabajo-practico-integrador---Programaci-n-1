@@ -838,8 +838,7 @@ def promedio_poblacion(Paises):
    input("Presione enter para volver al menu principal...")
    return
 
- total_poblacion = sum(pais["Poblacion"] for pais in Paises)
- promedio = total_poblacion / len(Paises)
+ promedio = median(pais["Poblacion"] for pais in Paises)
 
  print("-" * 30)
  print(f"Promedio de población: {promedio:,.0f} habitantes")
