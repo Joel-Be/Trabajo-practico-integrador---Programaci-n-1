@@ -1,3 +1,4 @@
+from statistics import median
 import os
 import csv
 
@@ -207,9 +208,7 @@ def actualizar_datos():
 
           opcion = input("Opcion: ").strip()
 
-          if not validar_numero(opcion):
-            print("ERROR! Debe ingresar un numero del 1 al 4")
-            continue
+          
         
           match opcion:
             case "1":
@@ -837,8 +836,7 @@ def promedio_poblacion(Paises):
    input("Presione enter para volver al menu principal...")
    return
 
- total_poblacion = sum(pais["Poblacion"] for pais in Paises)
- promedio = total_poblacion / len(Paises)
+ promedio = median(pais["Poblacion"] for pais in Paises)
 
  print("-" * 30)
  print(f"Promedio de población: {promedio:,.0f} habitantes")
@@ -851,8 +849,7 @@ def promedio_superficie(Paises):
     input("Presione enter para volver al menu principal...")
     return
   
- total_superficie = sum(pais["Superficie km2"] for pais in Paises)
- promedio = total_superficie / len(Paises)
+ promedio = median([pais["Superficie km2"] for pais in Paises])
   
  print("-" * 30)
  print(f"Promedio de superficie: {promedio:,.2f} km²")
