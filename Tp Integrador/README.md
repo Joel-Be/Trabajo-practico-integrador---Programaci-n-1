@@ -5,7 +5,7 @@ Toda la información se guarda en un archivo externo llamado “Paises.csv”, l
 
 El sistema funciona a través de un menú principal, desde el cual el usuario puede acceder a distintas funciones. A continuación, se describe su funcionamiento general:
 
-🔹 1. Agregar país
+- 1. Agregar país
 
 Permite incorporar un nuevo país al archivo.
 El usuario ingresa:
@@ -20,17 +20,17 @@ continente
 
 El programa valida que el país no exista previamente y que los datos ingresados sean válidos.
 
-🔹 2. Actualizar datos
+- 2. Actualizar datos
 
 Permite modificar la población o la superficie de un país ya registrado.
 El usuario selecciona el país, elige qué dato actualizar y el programa guarda los cambios en el archivo CSV.
 
-🔹 3. Buscar país
+- 3. Buscar país
 
 El usuario puede buscar un país por nombre o por coincidencia parcial.
 El programa muestra una lista de resultados y permite seleccionar uno para ver todos sus datos detallados.
 
-🔹 4. Filtro de países
+- 4. Filtro de países
 
 Ofrece tres tipos de filtrado:
 
@@ -42,7 +42,7 @@ Por rango de superficie
 
 Después del filtrado, el usuario puede ver datos del país seleccionado.
 
-🔹 5. Ordenar países
+- 5. Ordenar países
 
 Permite ordenar la lista de países según:
 
@@ -57,7 +57,7 @@ Continente
 El usuario también elige si quiere el orden creciente o decreciente.
 La ordenación se realiza mediante el algoritmo burbuja (implementado manualmente).
 
-🔹 6. Mostrar estadísticas
+- 6. Mostrar estadísticas
 
 El programa calcula y muestra estadísticas sobre los países cargados:
 
@@ -69,11 +69,11 @@ Promedio (mediana) de superficie
 
 Cantidad de países por continente
 
-🔹 7. Salir
+- 7. Salir
 
 Finaliza la ejecución del programa.
 
-📂 Manejo de archivos
+- Manejo de archivos
 
 El programa utiliza un archivo CSV para almacenar los datos.
 Cada registro incluye:
@@ -88,7 +88,7 @@ Continente
 
 Si el archivo no existe, se crea automáticamente con los encabezados correspondientes.
 
-🧠 Validaciones
+- Validaciones
 
 Para evitar errores del usuario, el programa incluye:
 
@@ -102,7 +102,7 @@ Control de opciones del menú
 
 Manejo de listas vacías
 
-✔️ Objetivo general
+- Objetivo general
 
 El programa permite administrar una base de datos simple pero completa de países, ofreciendo herramientas de:
 
