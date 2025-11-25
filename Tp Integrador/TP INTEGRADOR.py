@@ -774,7 +774,7 @@ def ordenar_lista(lista_desordenada, key, orden):
 
 # Opcion 6
 def mostrar_estadisticas():
-
+# Submenu
   Paises = Verificar_lista()
   print("<-----ESTADISTICAS DE PAISES----->")
   print("Seleccione la estadística que desea ver:")
@@ -802,19 +802,19 @@ def mostrar_estadisticas():
       print("Opción inválida. Intenta nuevamente.")
 
 def pais_menor_y_mayor_poblacion(Paises):
- Paises = Verificar_lista()
+ Paises = Verificar_lista() #Verificamos que la lista no sea vacia
  if len(Paises) == 0:
    print("No existen registros de ningun pais")
    input("Presione enter para volver al menu principal...")
    return
    
- pais_min = Paises[0]
+ pais_min = Paises[0] #inicializamos las variables
  pais_max = Paises[0]
 
  min_poblacion = Paises[0]["Poblacion"]
  max_poblacion = Paises[0]["Poblacion"]
 
- for pais in Paises:
+ for pais in Paises: #Recorremos elemento por elemento comparando uno tras otro
     if pais["Poblacion"] < min_poblacion:
       min_poblacion = pais["Poblacion"]
       pais_min = pais
@@ -822,7 +822,7 @@ def pais_menor_y_mayor_poblacion(Paises):
       max_poblacion = pais["Poblacion"]
       pais_max = pais
 
- print("-" * 30)
+ print("-" * 30) #Imprimimos el resultado
  print(f"País con menor población: {pais_min['Pais']}")
  print(f"Población: {pais_min['Poblacion']:,.0f} habitantes")
  print("-" * 30)
@@ -836,10 +836,10 @@ def promedio_poblacion(Paises):
    input("Presione enter para volver al menu principal...")
    return
 
- promedio = median(pais["Poblacion"] for pais in Paises)
+ promedio = median(pais["Poblacion"] for pais in Paises) #Mediana de poblacion
 
  print("-" * 30)
- print(f"Promedio de población: {promedio:,.0f} habitantes")
+ print(f"Promedio de población: {promedio:,.0f} habitantes") #Resultado
  return
 
 def promedio_superficie(Paises):
@@ -849,10 +849,10 @@ def promedio_superficie(Paises):
     input("Presione enter para volver al menu principal...")
     return
   
- promedio = median([pais["Superficie km2"] for pais in Paises])
+ promedio = median([pais["Superficie km2"] for pais in Paises]) #Mediana de superficie
   
  print("-" * 30)
- print(f"Promedio de superficie: {promedio:,.2f} km²")
+ print(f"Promedio de superficie: {promedio:,.2f} km²")#Resultado
 
 def cantidad_paises_por_continente(Paises):
   Paises = Verificar_lista()
@@ -861,11 +861,11 @@ def cantidad_paises_por_continente(Paises):
       input("Presione enter para volver al menu principal...")
       return
   
-  continente_count = {}
+  continente_count = {}  #Diccionario contador
   
-  for pais in Paises:
-      continente = pais["Continente"]
-      if continente in continente_count:
+  for pais in Paises: #Recorre cada elemento de la lista pais
+      continente = pais["Continente"]  
+      if continente in continente_count: #Si el continente coincide se suma 1 si no queda igual
         continente_count[continente] += 1
       else:
         continente_count[continente] = 1
